@@ -15,16 +15,37 @@
 
 <body>
 
-  <label for="day">Day</label>
-  <input type="number" name="day" id="day" placeholder="DD">
-  <label for="month">Month</label>
-  <input type="number" name="month" id="month" placeholder="MM">
-  <label for="year">Year</label>
-  <input type="number" name="year" id="year" placeholder="YYYY">
+  <form>
 
-  <span> -- </span>years
-  <span> -- </span>months
-  <span> -- </span>days
+    <div class="inputs">
+      <div class="input-field">
+        <label for="day">Day</label>
+        <input type="number" name="day" id="day" placeholder="dd" min="1" max="31">
+      </div>
+      <div class="input-field"> <label for="month">Month</label>
+        <input type="number" name="month" id="month" placeholder="mm" min="1" max="12">
+      </div>
+      <div class="input-field"> <label for="year">Year</label>
+        <input type="number" name="year" id="year" placeholder="yyyy">
+      </div>
+    </div>
+
+    <div class="process-separator">
+      <hr>
+      <button><svg xmlns="http://www.w3.org/2000/svg" width="36" height="34" viewBox="0 0 46 44">
+          <g fill="none" stroke="#FFF" stroke-width="2">
+            <path d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M45 22.019C37.667 21.686 23 25.616 23 44" />
+          </g>
+        </svg></button>
+    </div>
+
+    <div class="output">
+      <span>--</span>years<br>
+      <span>--</span>months<br>
+      <span>--</span>days<br>
+    </div>
+
+  </form>
 
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
