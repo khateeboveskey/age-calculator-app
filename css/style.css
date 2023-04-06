@@ -34,20 +34,21 @@ body {
 }
 
 form {
+	margin: 1rem;
 	background-color: var(--White);
 	padding: 3rem;
 	border-radius: 1rem 1rem 5rem 1rem;
 	width: fit-content;
 }
 
-div.inputs {
+.inputs {
 	display: flex;
 	flex-direction: row;
 	gap: 2rem;
 	margin-right: 5rem;
 }
 
-div.input-field {
+.input-field {
 	display: flex;
 	flex-direction: column;
 }
@@ -57,6 +58,8 @@ input {
 	width: 7rem;
 	border-radius: 0.3rem;
 	border: 1px solid var(--Light-grey);
+	font-size: 32px;
+	font-weight: 700;
 }
 
 input:focus {
@@ -67,15 +70,16 @@ form label {
 	text-transform: uppercase;
 	letter-spacing: 0.2rem;
 	font-size: 0.9rem;
-	font-weight: 600;
+	font-weight: 700;
 	margin-bottom: 0.3rem;
 	opacity: 0.5;
 }
 
 input::placeholder {
 	text-transform: uppercase;
-	font-weight: 600;
-	font-size: 1rem;
+	font-weight: 700;
+	opacity: 50%;
+	font-size: 32px;
 }
 
 input[type="number"]::-webkit-inner-spin-button {
@@ -103,6 +107,10 @@ button:hover svg {
 	transform: translate(0px, 5px);
 }
 
+button:active {
+	background-color: var(--Off-black);
+}
+
 div.process-separator {
 	display: flex;
 	flex-direction: row;
@@ -112,10 +120,57 @@ div.process-separator {
 
 .output {
 	font-size: 4rem;
-	font-weight: 900;
+	font-weight: 800;
 	font-style: italic;
 }
 
 .output span {
 	color: var(--primary-purple);
+}
+
+@media (max-width: 650px) {
+	input::placeholder,
+	input,
+	label {
+		font-size: 20px;
+	}
+
+
+	.inputs {
+		gap: 1rem;
+		margin-right: 0;
+		justify-content: space-between;
+	}
+	
+	div.process-separator {
+		margin: 2rem 0px;
+	}
+
+	button {
+		position: absolute;
+		left: 50%;
+		transform: translate(-50%, 0px);
+	}
+	form {
+		padding: 1.5rem;
+	}
+	.input-field input {
+		width: 100%;
+	}
+	.input-field {
+		width: 30%;
+	}
+	.output {
+		font-size: 3.5rem;
+	}
+}
+
+@media (max-width: 375px) {
+	.output {
+		font-size: 3rem;
+	}
+}
+
+.attribution {
+	padding: 2rem;
 }
