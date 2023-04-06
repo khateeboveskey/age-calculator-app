@@ -7,36 +7,24 @@
   <!-- displays site properly based on user's device -->
 
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/script.js"></script>
 
   <title>Frontend Mentor | Age calculator app</title>
-
-  <!-- Feel free to remove these styles or customize in your own stylesheet 👍 -->
-  <style>
-    .attribution {
-      font-size: 11px;
-      text-align: center;
-    }
-
-    .attribution a {
-      color: hsl(228, 45%, 44%);
-    }
-  </style>
 </head>
 
 <body>
 
-  Day
-  DD
+  <label for="day">Day</label>
+  <input type="number" name="day" id="day" placeholder="DD">
+  <label for="month">Month</label>
+  <input type="number" name="month" id="month" placeholder="MM">
+  <label for="year">Year</label>
+  <input type="number" name="year" id="year" placeholder="YYYY">
 
-  Month
-  MM
-
-  Year
-  YYYY
-
-  -- years
-  -- months
-  -- days
+  <span> -- </span>years
+  <span> -- </span>months
+  <span> -- </span>days
 
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
