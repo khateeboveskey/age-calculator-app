@@ -17,6 +17,15 @@
 	transition: all 0.3s ease 0s;
 }
 
+*::selection {
+	background-color: var(--primary-purple);
+	color: var(--White);
+}
+
+a {
+	text-decoration: none;
+}
+
 *::after,
 *::before {
 	box-sizing: border-box;
@@ -135,13 +144,12 @@ div.process-separator {
 		font-size: 20px;
 	}
 
-
 	.inputs {
 		gap: 1rem;
 		margin-right: 0;
 		justify-content: space-between;
 	}
-	
+
 	div.process-separator {
 		margin: 2rem 0px;
 	}
