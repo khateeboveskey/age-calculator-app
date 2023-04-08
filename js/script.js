@@ -29,6 +29,7 @@ function handleEnterPress(event) {
 }
 
 function invalidationError() {
+	let isValid;
 	const fields = [
 		{ input: dayInput, label: dayLabel, index: 0, min: 1, max: 31 },
 		{ input: monthInput, label: monthLabel, index: 1, min: 1, max: 12 },
@@ -41,7 +42,8 @@ function invalidationError() {
 		},
 	];
 
-	fields.forEach((field) => {
+	for (let i = 0; i < fields.length; i++) {
+		const field = fields[i];
 		const input = field.input;
 		const label = field.label;
 		const index = field.index;
@@ -53,23 +55,39 @@ function invalidationError() {
 			input.style.color = "var(--light-red)";
 			if (value == "") {
 				invalidation[index].innerHTML = "Field is empty!";
-			} else if (value > max) {
-				invalidation[index].innerHTML =
-					"Value is above<br>current date!";
-			} else if (value < min) {
-				invalidation[index].innerHTML = "Value is under<br>valid date!";
+			} else if (value > max || value < min) {
+				switch (input) {
+					case dayInput: {
+						invalidation[index].innerHTML =
+							"Day must be<br>between 1 and 31!";
+						break;
+					}
+					case monthInput: {
+						invalidation[index].innerHTML =
+							"Month must be<br>between 1 and 12!";
+						break;
+					}
+					case yearInput: {
+						invalidation[index].innerHTML =
+							"Day must be<br>between 1900<br>and Current Year!";
+						break;
+					}
+				}
 			}
 			invalidation[index].style.display = "block";
 			label.style.color = "var(--light-red)";
 			label.style.opacity = "1";
-			return false; // if input is invalid return true for invalidation
+			isValid = false;
 		} else {
 			input.style.color = "var(--Off-black)";
 			invalidation[index].style.display = "none";
 			label.style.color = "var(--Off-black)";
 			label.style.opacity = "0.5";
+			isValid = true;
 		}
-	});
+	}
+
+	return isValid;
 }
 
 function calculateAge() {
