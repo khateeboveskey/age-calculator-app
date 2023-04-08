@@ -1,7 +1,5 @@
 # Frontend Mentor - Age calculator app solution
 
----
-
 ## Table of contents
 
 - [Overview]
