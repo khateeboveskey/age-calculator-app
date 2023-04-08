@@ -68,6 +68,8 @@ form {
 	font-size: 15px;
 	margin-top: 4px;
 	font-weight: 400;
+	word-wrap: normal;
+	width: 1fr;
 }
 
 input {
