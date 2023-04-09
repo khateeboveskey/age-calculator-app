@@ -112,10 +112,20 @@ function calculateAge() {
 		const ageInDays = Math.floor((ageInMs % 2629746000) / 86400000);
 		// 86400000 = 1000ms * 60s * 60min * 24hrs
 
+		const ageInHours = Math.floor((ageInMs % 86400000) / 3600000);
+		// 3600000 = 1000ms * 60s * 60min
+		const ageInMinutes = Math.floor((ageInMs % 3600000) / 60000);
+		// 60000 = 1000ms * 60s
+		const ageInSeconds = Math.floor((ageInMs % 60000) / 1000);
+		// 1000ms
+
 		// Animate output fields with age values
 		animateOutput("years-output", ageInYears);
 		animateOutput("months-output", ageInMonths);
 		animateOutput("days-output", ageInDays);
+		animateOutput("hours-output", ageInHours);
+		animateOutput("minutes-output", ageInMinutes);
+		animateOutput("seconds-output", ageInSeconds);
 	}
 }
 
