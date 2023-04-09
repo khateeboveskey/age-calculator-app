@@ -86,12 +86,12 @@ input:focus {
 }
 
 form label {
+	color: var(--Smokey-grey);
 	text-transform: uppercase;
 	letter-spacing: 0.2rem;
 	font-size: 0.9rem;
 	font-weight: 700;
 	margin-bottom: 0.3rem;
-	opacity: 0.5;
 }
 
 input::placeholder {

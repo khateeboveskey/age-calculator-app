@@ -18,9 +18,6 @@ dayInput.addEventListener("keydown", handleEnterPress);
 monthInput.addEventListener("keydown", handleEnterPress);
 yearInput.addEventListener("keydown", handleEnterPress);
 
-// Add event listener for "click" event to calculate button
-calculateBtn.addEventListener("click", calculateAge);
-
 function handleEnterPress(event) {
 	// Check if Enter key is pressed
 	if (event.key === "Enter") {
@@ -53,36 +50,40 @@ function invalidationError() {
 
 		if (value == "" || value > max || value < min) {
 			input.style.color = "var(--light-red)";
+			input.style.borderColor = "var(--light-red)";
 			if (value == "") {
 				invalidation[index].innerHTML = "Field is empty!";
 			} else if (value > max || value < min) {
 				switch (input) {
 					case dayInput: {
-						invalidation[index].innerHTML =
-							"Day must be<br>between 1 and 31!";
+						invalidation[index].innerHTML = `Day must be${"<br>"}
+						between${"<br>"}
+						1 and 31!`;
 						break;
 					}
 					case monthInput: {
-						invalidation[index].innerHTML =
-							"Month must be<br>between 1 and 12!";
+						invalidation[index].innerHTML = `Month must be${"<br>"}
+						between${"<br>"}
+						1 and 12!`;
 						break;
 					}
 					case yearInput: {
-						invalidation[index].innerHTML =
-							"Day must be<br>between 1900<br>and Current Year!";
+						invalidation[index].innerHTML = `Year must be${"<br>"}
+						between 1900${"<br>"}
+						and Current Year!`;
 						break;
 					}
 				}
 			}
 			invalidation[index].style.display = "block";
 			label.style.color = "var(--light-red)";
-			label.style.opacity = "1";
 			isValid = false;
+			break;
 		} else {
+			input.style.borderColor = "var(--Light-grey)";
 			input.style.color = "var(--Off-black)";
 			invalidation[index].style.display = "none";
-			label.style.color = "var(--Off-black)";
-			label.style.opacity = "0.5";
+			label.style.color = "var(--Smokey-grey)";
 			isValid = true;
 		}
 	}
