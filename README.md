@@ -38,7 +38,6 @@ This project is a [Frontend Mentor Challenge](https://www.frontendmentor.io/chal
 
 ### Links
 
-- Solution URL: ~~Not uploaded yet.~~
 - Live Site URL: [GitHub Page](https://khateeboveskey.github.io/age-calculator-app/).
 
 ## My process
