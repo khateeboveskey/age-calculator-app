@@ -156,3 +156,26 @@ function animateOutput(outputId, value) {
 		document.getElementById(outputId).innerHTML = current;
 	}, 20);
 }
+
+window.onload = function () {
+	dayInput.focus();
+	autoFocus();
+};
+
+function autoFocus() {
+	if (dayInput.onblur && dayInput.value == "") {
+		dayInput.focus();
+	} else if (dayInput.value.length == 2) {
+		monthInput.focus();
+	}
+	if (monthInput.onblur && monthInput.value == "") {
+		monthInput.focus();
+	} else if (monthInput.value.length == 2) {
+		yearInput.focus();
+	}
+	if (yearInput.onblur && yearInput.value == "") {
+		yearInput.focus();
+	} else if (yearInput.value.length == 4) {
+		calculateBtn.click();
+	}
+}
