@@ -222,22 +222,3 @@ div.process-separator {
 	display: flex;
 	flex-direction: row;
 }
-
-/* Dark Mode */
-
-.dark-mode {
-	color: var(--text);
-}
-
-form.dark-mode {
-	background-color: var(--form-background);
-}
-
-body.dark-mode {
-	background-color: var(--body-background);
-}
-
-input.dark-mode {
-	background-color: var(--input-background);
-	border: 1px solid var(--form-background);
-}
