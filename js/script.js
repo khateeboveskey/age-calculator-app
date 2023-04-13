@@ -190,3 +190,17 @@ function autoFocus() {
 	}
 }
 
+
+function toggleDarkMode() {
+	const state = {
+		body: document.getElementsByTagName("body")[0],
+		form: document.getElementsByTagName("form")[0],
+		input0: document.getElementsByTagName("input")[0],
+		input1: document.getElementsByTagName("input")[1],
+		input2: document.getElementsByTagName("input")[2],
+	};
+
+	for (const key in state) {
+		state[key].classList.toggle("dark-mode");
+	}
+}
