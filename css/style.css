@@ -3,6 +3,7 @@
 
 /* variables */
 :root {
+	/* Light mode */
 	--primary-purple: hsl(259, 100%, 65%);
 	--light-red: hsl(0, 100%, 67%);
 	--White: hsl(0, 0%, 100%);
@@ -10,6 +11,12 @@
 	--Light-grey: hsl(0, 0%, 86%);
 	--Smokey-grey: hsl(0, 1%, 44%);
 	--Off-black: hsl(0, 0%, 8%);
+
+	/* Dark Mode */
+	--text: hsl(36, 10%, 90%);
+	--body-background: hsl(204, 7%, 14%);
+	--form-background: hsl(200, 6%, 10%);
+	--input-background: hsl(0, 0%, 23%);
 }
 
 * {
@@ -37,7 +44,7 @@ a {
 }
 
 body {
-	overflow: hidden;
+	overflow-x: hidden;
 	height: 100vh;
 	width: 100vw;
 	display: grid;
@@ -131,7 +138,7 @@ hr {
 	}
 }
 
-button {
+button#calculate-btn {
 	aspect-ratio: 1/1;
 	width: 4rem;
 	border-radius: 100%;
@@ -210,4 +217,33 @@ div.process-separator {
 .attribution {
 	padding: 2rem;
 	text-align: center;
+}
+
+/* Dark Mode */
+
+.dark-mode {
+	color: var(--text);
+}
+
+form.dark-mode {
+	background-color: var(--form-background);
+}
+
+body.dark-mode {
+	background-color: var(--body-background);
+}
+
+input.dark-mode {
+	background-color: var(--input-background);
+	border: 1px solid var(--form-background);
+}
+
+#toggle-dark-mode {
+	width: fit-content;
+	border-radius: 0.5rem;
+	padding: 10px;
+	background-color: var(--primary-purple);
+	cursor: pointer;
+	border: 0;
+	margin: 20px;
 }
