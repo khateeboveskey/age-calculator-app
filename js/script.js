@@ -25,6 +25,10 @@ function handleEnterPress(event) {
 	}
 }
 
+/**
+ * Check if inputs are invalid
+ * @returns isValid
+ */
 function invalidationError() {
 	let isValid;
 	const fields = [
@@ -39,6 +43,8 @@ function invalidationError() {
 		},
 	];
 
+	// check every field with for loop forEach() is not the function because
+	// it returns value for the callback function and not forEach itself
 	for (let i = 0; i < fields.length; i++) {
 		const field = fields[i];
 		const input = field.input;
@@ -97,6 +103,8 @@ function calculateAge() {
 	const month = document.getElementById("month").value;
 	const year = document.getElementById("year").value;
 
+	// invalidationError() returns boolean, to not to calculate
+	// unless the inputs are invalid
 	if (invalidationError()) {
 		// Create Date object from user input values
 		const birthDate = new Date(year, month - 1, day);
@@ -108,8 +116,13 @@ function calculateAge() {
 		const ageInYears = Math.floor(ageInMs / MS_PER_YEAR);
 		// MS_PER_YEAR = 1000ms * 60s * 60min * 24hrs * 365.25 days
 		const ageInMonths = Math.floor((ageInMs % MS_PER_YEAR) / 2629746000);
-		// 2629746000 = 1000ms * 60s * 60min * 24hrs * 30.44 days
+		/**
+		 *	ms per month
+		 *	 % is used because we want the remaining time
+		 *	 2629746000 = 1000ms * 60s * 60min * 24hrs * 30.44 days
+		 */
 		const ageInDays = Math.floor((ageInMs % 2629746000) / 86400000);
+		// ms per day
 		// 86400000 = 1000ms * 60s * 60min * 24hrs
 
 		const ageInHours = Math.floor((ageInMs % 86400000) / 3600000);
@@ -129,14 +142,20 @@ function calculateAge() {
 	}
 }
 
+/**
+ *
+ * @param {*} outputId Id of HTML tag to view output in
+ * @param {*} value value to be viewed in the HTML tag
+ */
 function animateOutput(outputId, value) {
-	// Set output value to 0 initially
+	// Set output value to 0 initially to start with
 	document.getElementById(outputId).innerHTML = 0;
 
 	// Calculate step size for animation
 	const step = Math.ceil(value / 100);
 
-	// Use setInterval to update output value every 10 milliseconds until it reaches the calculated value
+	// Use setInterval to update output value every 10 milliseconds
+	// until it reaches the calculated value
 	let current = 0;
 	const interval = setInterval(() => {
 		current += step;
@@ -146,4 +165,18 @@ function animateOutput(outputId, value) {
 		}
 		document.getElementById(outputId).innerHTML = current;
 	}, 20);
+}
+
+function toggleDarkMode() {
+	const state = {
+		body: document.getElementsByTagName("body")[0],
+		form: document.getElementsByTagName("form")[0],
+		input0: document.getElementsByTagName("input")[0],
+		input1: document.getElementsByTagName("input")[1],
+		input2: document.getElementsByTagName("input")[2],
+	};
+
+	for (const key in state) {
+		state[key].classList.toggle("dark-mode");
+	}
 }

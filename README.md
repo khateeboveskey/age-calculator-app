@@ -1,14 +1,25 @@
 # Frontend Mentor - Age calculator app solution
 
-## Table of contents
+## Table of Contents
 
-- [Overview]
+- [Frontend Mentor - Age calculator app solution](#frontend-mentor---age-calculator-app-solution)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+    - [Challenge Description](#challenge-description)
+    - [Screenshot](#screenshot)
+    - [Links](#links)
+  - [My process](#my-process)
+    - [Built with](#built-with)
+    - [What I learned](#what-i-learned)
+    - [Continued development](#continued-development)
+    - [Useful resources](#useful-resources)
+  - [Author](#author)
 
 ## Overview
 
 This project is a [Frontend Mentor Challenge](https://www.frontendmentor.io/challenges/age-calculator-app-dF9DFFpj-Q). Frontend Mentor is a website that provides challenges for frontend developers to develop their skills with real projects.
 
-### The challenge
+### Challenge Description
 
 - View an age in years, months, and days after submitting a valid date through the form
 - Receive validation errors if:
@@ -27,7 +38,6 @@ This project is a [Frontend Mentor Challenge](https://www.frontendmentor.io/chal
 
 ### Links
 
-- Solution URL: ~~Not uploaded yet.~~
 - Live Site URL: [GitHub Page](https://khateeboveskey.github.io/age-calculator-app/).
 
 ## My process
@@ -44,7 +54,13 @@ This describes how the project is started and completed.
 
 ### What I learned
 
+- I learned how to deal with DOM
+- I got familiar with some JS functions, which is a language I still learn.
+
 ### Continued development
+
+- I intend to know more about Date() class in JS.
+- I want to wise up my knowledge in JS by adding more features to the project like Arabic Language, Dark Mode, Hours, minutes and seconds
 
 ### Useful resources
 
@@ -55,5 +71,3 @@ This describes how the project is started and completed.
 
 - Frontend Mentor - [@khateeboveskey](https://www.frontendmentor.io/profile/khateeboveskey)
 - Twitter - [@khateeb404](https://www.twitter.com/khateeb404)
-
-## Acknowledgments

@@ -8,13 +8,19 @@
 
   <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <title>Age Calculator</title>
 </head>
 
 <body>
 
+  <div id="options">
+    <button id="toggle-dark-mode" onclick="toggleDarkMode()">Dark mode</button>
+  </div>
+
   <form>
 
+    <!-- input section -->
     <div class="inputs">
       <div class="input-field">
         <label id="day-label" for="day">Day</label>
@@ -31,6 +37,7 @@
       </div>
     </div>
 
+    <!-- button and horizontal line -->
     <div class="process-separator">
       <hr>
       <button type="button" onclick="calculateAge();" id="calculate-btn"><svg xmlns="http://www.w3.org/2000/svg"
@@ -41,6 +48,7 @@
         </svg></button>
     </div>
 
+    <!-- output section -->
     <div class="output">
       <span id="years-output">--</span> years<br>
       <span id="months-output">--</span> months<br>
@@ -52,9 +60,10 @@
 
   </form>
 
+  <!-- credits -->
   <div class="attribution">
     Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
-    Coded by <a href="https://github.com/khateeboveskey">Khateeb</a>.
+    <br>Coded by <a href="https://github.com/khateeboveskey">Khateeb</a>.
   </div>
   <script src="js/script.js"></script>
 </body>
