@@ -139,7 +139,22 @@ function calculateAge() {
 		animateOutput("hours-output", ageInHours);
 		animateOutput("minutes-output", ageInMinutes);
 		animateOutput("seconds-output", ageInSeconds);
+
+		moveSecondAndMinutes();
 	}
+}
+
+function moveSecondAndMinutes() {
+	let seconds = ageInSeconds;
+	const intervalId = setInterval(function () {
+		document.getElementById("seconds-output").innerHTML = seconds;
+		seconds++;
+		if (seconds >= 60) {
+			clearInterval(intervalId);
+			const minutes = Math.floor(seconds / 60);
+			document.getElementById("minutes-output").innerHTML = minutes;
+		}
+	}, 1000);
 }
 
 /**
