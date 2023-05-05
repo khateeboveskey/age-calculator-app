@@ -1,17 +1,19 @@
-const dayInput = document.getElementById("day");
-const monthInput = document.getElementById("month");
-const yearInput = document.getElementById("year");
+let dayInput = document.getElementById("day");
+let monthInput = document.getElementById("month");
+let yearInput = document.getElementById("year");
 
-const calculateBtn = document.getElementById("calculate-btn");
+let calculateBtn = document.getElementById("calculate-btn");
 
-const dayLabel = document.getElementById("day-label");
-const monthLabel = document.getElementById("month-label");
-const yearLabel = document.getElementById("year-label");
+let dayLabel = document.getElementById("day-label");
+let monthLabel = document.getElementById("month-label");
+let yearLabel = document.getElementById("year-label");
 
-const invalidation = document.querySelectorAll(".input-field p");
-const currentYear = new Date();
+let invalidation = document.querySelectorAll(".input-field p");
+let currentYear = new Date();
 
-const MS_PER_YEAR = 31556952000;
+let MS_PER_YEAR = 31556952000;
+
+let isDark = false;
 
 // Add event listener for "keydown" event to input fields
 dayInput.addEventListener("keydown", handleEnterPress);
@@ -29,9 +31,9 @@ function handleEnterPress(event) {
  * Check if inputs are invalid
  * @returns isValid
  */
-function invalidationError() {
+function isValid() {
 	let isValid;
-	const fields = [
+	let fields = [
 		{ input: dayInput, label: dayLabel, index: 0, min: 1, max: 31 },
 		{ input: monthInput, label: monthLabel, index: 1, min: 1, max: 12 },
 		{
@@ -46,13 +48,13 @@ function invalidationError() {
 	// check every field with for loop forEach() is not the function because
 	// it returns value for the callback function and not forEach itself
 	for (let i = 0; i < fields.length; i++) {
-		const field = fields[i];
-		const input = field.input;
-		const label = field.label;
-		const index = field.index;
-		const min = field.min;
-		const max = field.max;
-		const value = input.value;
+		let field = fields[i];
+		let input = field.input;
+		let label = field.label;
+		let index = field.index;
+		let min = field.min;
+		let max = field.max;
+		let value = input.value;
 
 		if (value == "" || value > max || value < min) {
 			input.style.color = "var(--light-red)";
@@ -87,9 +89,13 @@ function invalidationError() {
 			break;
 		} else {
 			input.style.borderColor = "var(--Light-grey)";
-			input.style.color = "var(--Off-black)";
+			if (isDark) {
+				input.style.color = "var(--Off-black)";
+			} else {
+				input.style.color = "var(--Off-black)";
+			}
 			invalidation[index].style.display = "none";
-			label.style.color = "var(--Smokey-grey)";
+			label.style.color = "var(--text)";
 			isValid = true;
 		}
 	}
@@ -99,37 +105,37 @@ function invalidationError() {
 
 function calculateAge() {
 	// Get user input values
-	const day = document.getElementById("day").value;
-	const month = document.getElementById("month").value;
-	const year = document.getElementById("year").value;
+	let day = document.getElementById("day").value;
+	let month = document.getElementById("month").value;
+	let year = document.getElementById("year").value;
 
-	// invalidationError() returns boolean, to not to calculate
+	// isValid() returns boolean, to not to calculate
 	// unless the inputs are invalid
-	if (invalidationError()) {
+	if (isValid()) {
 		// Create Date object from user input values
-		const birthDate = new Date(year, month - 1, day);
+		let birthDate = new Date(year, month - 1, day);
 
 		// Calculate age in milliseconds
-		const ageInMs = Date.now() - birthDate.getTime();
+		let ageInMs = Date.now() - birthDate.getTime();
 
 		// Calculate age in years, months, and days
-		const ageInYears = Math.floor(ageInMs / MS_PER_YEAR);
+		let ageInYears = Math.floor(ageInMs / MS_PER_YEAR);
 		// MS_PER_YEAR = 1000ms * 60s * 60min * 24hrs * 365.25 days
-		const ageInMonths = Math.floor((ageInMs % MS_PER_YEAR) / 2629746000);
+		let ageInMonths = Math.floor((ageInMs % MS_PER_YEAR) / 2629746000);
 		/**
 		 *	ms per month
 		 *	 % is used because we want the remaining time
 		 *	 2629746000 = 1000ms * 60s * 60min * 24hrs * 30.44 days
 		 */
-		const ageInDays = Math.floor((ageInMs % 2629746000) / 86400000);
+		let ageInDays = Math.floor((ageInMs % 2629746000) / 86400000);
 		// ms per day
 		// 86400000 = 1000ms * 60s * 60min * 24hrs
 
-		const ageInHours = Math.floor((ageInMs % 86400000) / 3600000);
+		let ageInHours = Math.floor((ageInMs % 86400000) / 3600000);
 		// 3600000 = 1000ms * 60s * 60min
-		const ageInMinutes = Math.floor((ageInMs % 3600000) / 60000);
+		let ageInMinutes = Math.floor((ageInMs % 3600000) / 60000);
 		// 60000 = 1000ms * 60s
-		const ageInSeconds = Math.floor((ageInMs % 60000) / 1000);
+		let ageInSeconds = Math.floor((ageInMs % 60000) / 1000);
 		// 1000ms
 
 		// Animate output fields with age values
@@ -140,19 +146,22 @@ function calculateAge() {
 		animateOutput("minutes-output", ageInMinutes);
 		animateOutput("seconds-output", ageInSeconds);
 
-		moveSecondAndMinutes();
+		moveSecondAndMinutes(ageInSeconds, ageInMinutes);
 	}
 }
 
-function moveSecondAndMinutes() {
-	let seconds = ageInSeconds;
-	const intervalId = setInterval(function () {
-		document.getElementById("seconds-output").innerHTML = seconds;
-		seconds++;
-		if (seconds >= 60) {
-			clearInterval(intervalId);
-			const minutes = Math.floor(seconds / 60);
-			document.getElementById("minutes-output").innerHTML = minutes;
+function moveSecondAndMinutes(ageInSeconds, ageInMinutes) {
+	let secondsOutput = document.getElementById("seconds-output");
+	let minutesOutput = document.getElementById("minutes-output");
+
+	setInterval(function () {
+		secondsOutput.innerHTML = ageInSeconds;
+		ageInSeconds++;
+
+		if (ageInSeconds === 60) {
+			ageInSeconds = 00;
+			ageInMinutes++;
+			minutesOutput.innerHTML = ageInMinutes;
 		}
 	}, 1000);
 }
@@ -167,12 +176,12 @@ function animateOutput(outputId, value) {
 	document.getElementById(outputId).innerHTML = 0;
 
 	// Calculate step size for animation
-	const step = Math.ceil(value / 100);
+	let step = Math.ceil(value / 100);
 
 	// Use setInterval to update output value every 10 milliseconds
 	// until it reaches the calculated value
 	let current = 0;
-	const interval = setInterval(() => {
+	let interval = setInterval(() => {
 		current += step;
 		if (current >= value) {
 			clearInterval(interval);
@@ -205,9 +214,8 @@ function autoFocus() {
 	}
 }
 
-
 function toggleDarkMode() {
-	const state = {
+	let state = {
 		body: document.getElementsByTagName("body")[0],
 		form: document.getElementsByTagName("form")[0],
 		input0: document.getElementsByTagName("input")[0],
@@ -215,7 +223,8 @@ function toggleDarkMode() {
 		input2: document.getElementsByTagName("input")[2],
 	};
 
-	for (const key in state) {
+	for (let key in state) {
 		state[key].classList.toggle("dark-mode");
 	}
+	let isDark = !isDark;
 }
