@@ -9,7 +9,7 @@ let monthLabel = document.getElementById("month-label");
 let yearLabel = document.getElementById("year-label");
 
 let invalidation = document.querySelectorAll(".input-field p");
-let currentYear = new Date();
+let currentTime = new Date();
 
 let MS_PER_YEAR = 31556952000;
 
@@ -29,17 +29,29 @@ function handleEnterPress(event) {
  * Check if inputs are invalid
  * @returns isValid
  */
-function invalidationError() {
+function isValid() {
 	let isValid;
 	let fields = [
-		{ input: dayInput, label: dayLabel, index: 0, min: 1, max: 31 },
-		{ input: monthInput, label: monthLabel, index: 1, min: 1, max: 12 },
+		{
+			input: dayInput,
+			label: dayLabel,
+			index: 0,
+			min: 1,
+			max: 31,
+		},
+		{
+			input: monthInput,
+			label: monthLabel,
+			index: 1,
+			min: 1,
+			max: 12,
+		},
 		{
 			input: yearInput,
 			label: yearLabel,
 			index: 2,
 			min: 1900,
-			max: currentYear.getFullYear(),
+			max: currentTime.getFullYear(),
 		},
 	];
 
@@ -87,9 +99,7 @@ function invalidationError() {
 			break;
 		} else {
 			input.style.borderColor = "var(--Light-grey)";
-			input.style.color = "var(--Off-black)";
 			invalidation[index].style.display = "none";
-			label.style.color = "var(--Smokey-grey)";
 			isValid = true;
 		}
 	}
@@ -103,9 +113,9 @@ function calculateAge() {
 	let month = document.getElementById("month").value;
 	let year = document.getElementById("year").value;
 
-	// invalidationError() returns boolean, to not to calculate
+	// isValid() returns boolean, to not to calculate
 	// unless the inputs are invalid
-	if (invalidationError()) {
+	if (isValid()) {
 		// Create Date object from user input values
 		let birthDate = new Date(year, month - 1, day);
 
@@ -140,20 +150,22 @@ function calculateAge() {
 		animateOutput("minutes-output", ageInMinutes);
 		animateOutput("seconds-output", ageInSeconds);
 
-		moveSecondAndMinutes();
+		moveSecondAndMinutes(ageInSeconds, ageInMinutes);
 	}
 }
 
-function moveSecondAndMinutes() {
-	let seconds = ageInSeconds;
-	let intervalId = setInterval(function () {
-		document.getElementById("seconds-output").innerHTML = seconds;
-		seconds++;
-		if (seconds >= 60) {
-			clearInterval(intervalId);
-			let minutes = Math.floor(seconds / 60);
-			document.getElementById("minutes-output").innerHTML = minutes;
+function moveSecondAndMinutes(ageInSeconds, ageInMinutes) {
+	let secondsOutput = document.getElementById("seconds-output");
+	let minutesOutput = document.getElementById("minutes-output");
+
+	setInterval(function () {
+		if (ageInSeconds === 60) {
+			ageInSeconds = 00;
+			ageInMinutes++;
+			minutesOutput.innerHTML = ageInMinutes;
 		}
+		secondsOutput.innerHTML = ageInSeconds;
+		ageInSeconds++;
 	}, 1000);
 }
 
@@ -181,30 +193,6 @@ function animateOutput(outputId, value) {
 		document.getElementById(outputId).innerHTML = current;
 	}, 20);
 }
-
-window.onload = function () {
-	dayInput.focus();
-	autoFocus();
-};
-
-function autoFocus() {
-	if (dayInput.onblur && dayInput.value == "") {
-		dayInput.focus();
-	} else if (dayInput.value.length == 2) {
-		monthInput.focus();
-	}
-	if (monthInput.onblur && monthInput.value == "") {
-		monthInput.focus();
-	} else if (monthInput.value.length == 2) {
-		yearInput.focus();
-	}
-	if (yearInput.onblur && yearInput.value == "") {
-		yearInput.focus();
-	} else if (yearInput.value.length == 4) {
-		calculateBtn.click();
-	}
-}
-
 
 function toggleDarkMode() {
 	let state = {
