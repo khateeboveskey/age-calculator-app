@@ -2,37 +2,61 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@400;700;800&display=swap");
 
 :root {
-	/* Light mode */
+	/* Light mode colors */
 	--primary-purple: hsl(259, 100%, 65%);
 	--light-red: hsl(0, 100%, 67%);
-	--White: hsl(0, 0%, 100%);
-	--Off-white: hsl(0, 0%, 94%);
-	--Light-grey: hsl(0, 0%, 86%);
-	--Smokey-grey: hsl(0, 1%, 44%);
-	--Off-black: hsl(0, 0%, 8%);
+	--white: hsl(0, 0%, 100%);
+	--off-white: hsl(0, 0%, 94%);
+	--light-grey: hsl(0, 0%, 86%);
+	--smokey-grey: hsl(0, 1%, 44%);
+	--off-black: hsl(0, 0%, 8%);
 
-	/* Dark Mode */
+	/* Dark mode colors */
 	--text: hsl(36, 10%, 90%);
 	--body-background: hsl(204, 7%, 14%);
 	--form-background: hsl(200, 6%, 10%);
 	--input-background: hsl(0, 0%, 23%);
+
+	/* Typography */
+	--font-family: "Poppins", sans-serif;
+	--font-size-input: 32px;
+	--font-size-placeholder: 30px;
+	--font-size-label: 0.9rem;
+	--font-size-output: 4rem;
+	--font-size-output-mobile: 3.5rem;
+	--font-size-output-small: 3rem;
+	--font-size-error: 15px;
+
+	/* Layout */
+	--border-radius: 1rem;
+	--border-radius-large: 5rem;
+	--border-radius-small: 0.3rem;
+	--spacing-small: 0.3rem;
+	--spacing-medium: 1rem;
+	--spacing-large: 2rem;
+	--spacing-xlarge: 3rem;
+
+	/* Animation */
+	--transition-duration: 0.3s;
+	--animation-duration: 20ms;
+
+	/* Responsive breakpoints */
+	--breakpoint-mobile: 650px;
+	--breakpoint-small: 375px;
 }
 
+/* Reset and base styles */
 * {
 	box-sizing: border-box;
-	font-family: "Poppins", sans-serif;
+	font-family: var(--font-family);
 	margin: 0;
 	padding: 0;
-	transition: all 0.3s ease 0s;
+	transition: all var(--transition-duration) ease 0s;
 }
 
 *::selection {
 	background-color: var(--primary-purple);
-	color: var(--White);
-}
-
-a {
-	text-decoration: none;
+	color: var(--white);
 }
 
 *::after,
@@ -42,28 +66,34 @@ a {
 	padding: 0;
 }
 
+a {
+	text-decoration: none;
+}
+
+/* Layout */
 body {
 	overflow-x: hidden;
 	height: 100vh;
 	width: 100vw;
 	display: grid;
 	place-items: center;
-	background-color: var(--Off-white);
+	background-color: var(--off-white);
 }
 
 form {
-	margin: 1rem;
-	background-color: var(--White);
-	padding: 3rem;
-	border-radius: 1rem 1rem 5rem 1rem;
+	margin: var(--spacing-medium);
+	background-color: var(--white);
+	padding: var(--spacing-xlarge);
+	border-radius: var(--border-radius) var(--border-radius) var(--border-radius-large) var(--border-radius);
 	width: fit-content;
 }
 
+/* Input section */
 .inputs {
 	display: flex;
 	flex-direction: row;
-	gap: 2rem;
-	margin-right: 5rem;
+	gap: var(--spacing-large);
+	margin-right: var(--border-radius-large);
 }
 
 .input-field {
@@ -74,7 +104,7 @@ form {
 .input-field p {
 	display: none;
 	color: var(--light-red);
-	font-size: 15px;
+	font-size: var(--font-size-error);
 	margin-top: 4px;
 	font-weight: 400;
 	word-wrap: normal;
@@ -84,9 +114,9 @@ form {
 input {
 	padding: 0.5rem;
 	width: 7rem;
-	border-radius: 0.3rem;
-	border: 1px solid var(--Light-grey);
-	font-size: 32px;
+	border-radius: var(--border-radius-small);
+	border: 1px solid var(--light-grey);
+	font-size: var(--font-size-input);
 	font-weight: 700;
 }
 
@@ -95,19 +125,19 @@ input:focus {
 }
 
 form label {
-	color: var(--Smokey-grey);
+	color: var(--smokey-grey);
 	text-transform: uppercase;
 	letter-spacing: 0.2rem;
-	font-size: 0.9rem;
+	font-size: var(--font-size-label);
 	font-weight: 700;
-	margin-bottom: 0.3rem;
+	margin-bottom: var(--spacing-small);
 }
 
 input::placeholder {
 	text-transform: uppercase;
 	font-weight: 700;
 	opacity: 30%;
-	font-size: 30px;
+	font-size: var(--font-size-placeholder);
 }
 
 input[type="number"]::-webkit-inner-spin-button {
@@ -116,8 +146,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 hr {
-	border: 1px solid var(--Light-grey);
-	margin: 1rem 0 1rem 0;
+	border: 1px solid var(--light-grey);
+	margin: var(--spacing-medium) 0 var(--spacing-medium) 0;
 	width: 100%;
 	height: 1px;
 }
@@ -151,26 +181,40 @@ hr {
 }
 
 .process-separator button:active {
-	background-color: var(--Off-black);
+	background-color: var(--off-black);
 }
 
-div.process-separator {
+.process-separator {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
 }
 
+/* Output section */
 .output {
-	font-size: 4rem;
+	font-size: var(--font-size-output);
 	font-weight: 800;
 	font-style: italic;
 }
 
 .output span {
 	color: var(--primary-purple);
+	animation: count-up 3s ease-in-out 0s;
 }
 
+@keyframes count-up {
+	from {
+		opacity: 0;
+		transform: translate(0, var(--spacing-medium));
+	}
+	to {
+		opacity: 1;
+		transform: translate(0, 0);
+	}
+}
+
+/* Responsive design */
 @media (max-width: 650px) {
 	input::placeholder,
 	input,
@@ -179,13 +223,13 @@ div.process-separator {
 	}
 
 	.inputs {
-		gap: 1rem;
+		gap: var(--spacing-medium);
 		margin-right: 0;
 		justify-content: space-between;
 	}
 
-	div.process-separator {
-		margin: 2rem 0px;
+	.process-separator {
+		margin: var(--spacing-large) 0px;
 	}
 
 	button {
@@ -193,28 +237,33 @@ div.process-separator {
 		left: 50%;
 		transform: translate(-50%, 0px);
 	}
+	
 	form {
 		padding: 1.5rem;
 	}
+	
 	.input-field input {
 		width: 100%;
 	}
+	
 	.input-field {
 		width: 30%;
 	}
+	
 	.output {
-		font-size: 3.5rem;
+		font-size: var(--font-size-output-mobile);
 	}
 }
 
 @media (max-width: 375px) {
 	.output {
-		font-size: 3rem;
+		font-size: var(--font-size-output-small);
 	}
 }
 
+/* Attribution and options */
 .attribution {
-	padding: 2rem;
+	padding: var(--spacing-large);
 	text-align: center;
 }
 
@@ -223,8 +272,17 @@ div.process-separator {
 	flex-direction: row;
 }
 
-/* Dark Mode */
+#toggle-dark-mode {
+	width: fit-content;
+	border-radius: 0.5rem;
+	padding: 10px;
+	background-color: var(--primary-purple);
+	cursor: pointer;
+	border: 0;
+	margin: 20px;
+}
 
+/* Dark mode styles */
 .dark-mode {
 	color: var(--text);
 }
@@ -240,14 +298,4 @@ body.dark-mode {
 input.dark-mode {
 	background-color: var(--input-background);
 	border: 1px solid var(--form-background);
-}
-
-#toggle-dark-mode {
-	width: fit-content;
-	border-radius: 0.5rem;
-	padding: 10px;
-	background-color: var(--primary-purple);
-	cursor: pointer;
-	border: 0;
-	margin: 20px;
 }

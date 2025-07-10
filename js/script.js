@@ -1,209 +1,306 @@
-let dayInput = document.getElementById("day");
-let monthInput = document.getElementById("month");
-let yearInput = document.getElementById("year");
+/**
+ * Age Calculator Application
+ * Refactored for improved code quality, maintainability, and performance
+ */
 
-let calculateBtn = document.getElementById("calculate-btn");
+// Constants for time calculations
+const MS_PER_YEAR = 31556952000;
+const MS_PER_MONTH = 2629746000;
+const MS_PER_DAY = 86400000;
+const MS_PER_HOUR = 3600000;
+const MS_PER_MINUTE = 60000;
+const MS_PER_SECOND = 1000;
 
-let dayLabel = document.getElementById("day-label");
-let monthLabel = document.getElementById("month-label");
-let yearLabel = document.getElementById("year-label");
+// Validation rules for input fields
+const VALIDATION_RULES = {
+	DAY: { min: 1, max: 31 },
+	MONTH: { min: 1, max: 12 },
+	YEAR: { min: 1900, max: new Date().getFullYear() }
+};
 
-let invalidation = document.querySelectorAll(".input-field p");
-let currentTime = new Date();
+// DOM element references
+const domElements = {
+	dayInput: document.getElementById("day"),
+	monthInput: document.getElementById("month"),
+	yearInput: document.getElementById("year"),
+	calculateBtn: document.getElementById("calculate-btn"),
+	dayLabel: document.getElementById("day-label"),
+	monthLabel: document.getElementById("month-label"),
+	yearLabel: document.getElementById("year-label"),
+	invalidationMessages: document.querySelectorAll(".input-field p")
+};
 
-let MS_PER_YEAR = 31556952000;
+// Global state for live update interval
+let liveUpdateInterval = null;
 
-// Add event listener for "keydown" event to input fields
-dayInput.addEventListener("keydown", handleEnterPress);
-monthInput.addEventListener("keydown", handleEnterPress);
-yearInput.addEventListener("keydown", handleEnterPress);
+// Initialize event listeners
+function initializeEventListeners() {
+	const inputs = [domElements.dayInput, domElements.monthInput, domElements.yearInput];
+	inputs.forEach(input => {
+		input.addEventListener("keydown", handleEnterPress);
+	});
+}
 
 function handleEnterPress(event) {
-	// Check if Enter key is pressed
 	if (event.key === "Enter") {
 		calculateAge();
 	}
 }
 
 /**
- * Check if inputs are invalid
- * @returns isValid
+ * Reset input field styles to default state
+ * @param {HTMLElement} input - The input element
+ * @param {HTMLElement} label - The label element
+ * @param {HTMLElement} errorMessage - The error message element
+ */
+function resetFieldStyles(input, label, errorMessage) {
+	input.style.color = "";
+	input.style.borderColor = "var(--Light-grey)";
+	label.style.color = "";
+	errorMessage.style.display = "none";
+}
+
+/**
+ * Apply error styles to input field
+ * @param {HTMLElement} input - The input element
+ * @param {HTMLElement} label - The label element
+ * @param {HTMLElement} errorMessage - The error message element
+ * @param {string} message - Error message to display
+ */
+function applyErrorStyles(input, label, errorMessage, message) {
+	input.style.color = "var(--light-red)";
+	input.style.borderColor = "var(--light-red)";
+	label.style.color = "var(--light-red)";
+	errorMessage.innerHTML = message;
+	errorMessage.style.display = "block";
+}
+
+/**
+ * Get validation error message for a field
+ * @param {string} fieldType - Type of field ('DAY', 'MONTH', 'YEAR')
+ * @param {string} value - Field value
+ * @returns {string} Error message
+ */
+function getValidationErrorMessage(fieldType, value) {
+	if (value === "") {
+		return "Field is empty!";
+	}
+
+	const rules = VALIDATION_RULES[fieldType];
+	if (value < rules.min || value > rules.max) {
+		switch (fieldType) {
+			case 'DAY':
+				return `Day must be${"<br>"}between${"<br>"}1 and 31!`;
+			case 'MONTH':
+				return `Month must be${"<br>"}between${"<br>"}1 and 12!`;
+			case 'YEAR':
+				return `Year must be${"<br>"}between 1900${"<br>"}and Current Year!`;
+			default:
+				return "Invalid value!";
+		}
+	}
+	return "";
+}
+
+/**
+ * Validate a single input field
+ * @param {Object} field - Field configuration object
+ * @returns {boolean} True if valid, false otherwise
+ */
+function validateField(field) {
+	const { input, label, errorMessage, type, rules } = field;
+	const value = input.value;
+
+	// Reset styles first
+	resetFieldStyles(input, label, errorMessage);
+
+	// Check if value is valid
+	if (value === "" || value < rules.min || value > rules.max) {
+		const message = getValidationErrorMessage(type, value);
+		applyErrorStyles(input, label, errorMessage, message);
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Validate all input fields
+ * @returns {boolean} True if all fields are valid, false otherwise
  */
 function isValid() {
-	let isValid;
-	let fields = [
+	const fields = [
 		{
-			input: dayInput,
-			label: dayLabel,
-			index: 0,
-			min: 1,
-			max: 31,
+			input: domElements.dayInput,
+			label: domElements.dayLabel,
+			errorMessage: domElements.invalidationMessages[0],
+			type: 'DAY',
+			rules: VALIDATION_RULES.DAY
 		},
 		{
-			input: monthInput,
-			label: monthLabel,
-			index: 1,
-			min: 1,
-			max: 12,
+			input: domElements.monthInput,
+			label: domElements.monthLabel,
+			errorMessage: domElements.invalidationMessages[1],
+			type: 'MONTH',
+			rules: VALIDATION_RULES.MONTH
 		},
 		{
-			input: yearInput,
-			label: yearLabel,
-			index: 2,
-			min: 1900,
-			max: currentTime.getFullYear(),
-		},
+			input: domElements.yearInput,
+			label: domElements.yearLabel,
+			errorMessage: domElements.invalidationMessages[2],
+			type: 'YEAR',
+			rules: VALIDATION_RULES.YEAR
+		}
 	];
 
-	// check every field with for loop forEach() is not the function because
-	// it returns value for the callback function and not forEach itself
-	for (let i = 0; i < fields.length; i++) {
-		let field = fields[i];
-		let input = field.input;
-		let label = field.label;
-		let index = field.index;
-		let min = field.min;
-		let max = field.max;
-		let value = input.value;
-
-		if (value == "" || value > max || value < min) {
-			input.style.color = "var(--light-red)";
-			input.style.borderColor = "var(--light-red)";
-			if (value == "") {
-				invalidation[index].innerHTML = "Field is empty!";
-			} else if (value > max || value < min) {
-				switch (input) {
-					case dayInput: {
-						invalidation[index].innerHTML = `Day must be${"<br>"}
-						between${"<br>"}
-						1 and 31!`;
-						break;
-					}
-					case monthInput: {
-						invalidation[index].innerHTML = `Month must be${"<br>"}
-						between${"<br>"}
-						1 and 12!`;
-						break;
-					}
-					case yearInput: {
-						invalidation[index].innerHTML = `Year must be${"<br>"}
-						between 1900${"<br>"}
-						and Current Year!`;
-						break;
-					}
-				}
-			}
-			invalidation[index].style.display = "block";
-			label.style.color = "var(--light-red)";
-			isValid = false;
-			break;
-		} else {
-			input.style.borderColor = "var(--Light-grey)";
-			invalidation[index].style.display = "none";
-			isValid = true;
-		}
-	}
-
-	return isValid;
+	// Validate all fields and return true only if all are valid
+	return fields.every(field => validateField(field));
 }
 
+/**
+ * Calculate age components from birth date
+ * @param {Date} birthDate - The birth date
+ * @returns {Object} Age components (years, months, days, hours, minutes, seconds)
+ */
+function calculateAgeComponents(birthDate) {
+	const ageInMs = Date.now() - birthDate.getTime();
+
+	return {
+		years: Math.floor(ageInMs / MS_PER_YEAR),
+		months: Math.floor((ageInMs % MS_PER_YEAR) / MS_PER_MONTH),
+		days: Math.floor((ageInMs % MS_PER_MONTH) / MS_PER_DAY),
+		hours: Math.floor((ageInMs % MS_PER_DAY) / MS_PER_HOUR),
+		minutes: Math.floor((ageInMs % MS_PER_HOUR) / MS_PER_MINUTE),
+		seconds: Math.floor((ageInMs % MS_PER_MINUTE) / MS_PER_SECOND)
+	};
+}
+
+/**
+ * Display age results with animation
+ * @param {Object} ageComponents - Age components to display
+ */
+function displayAgeResults(ageComponents) {
+	// Stop any existing live update
+	stopLiveUpdate();
+
+	// Animate output fields with age values
+	animateOutput("years-output", ageComponents.years);
+	animateOutput("months-output", ageComponents.months);
+	animateOutput("days-output", ageComponents.days);
+	animateOutput("hours-output", ageComponents.hours);
+	animateOutput("minutes-output", ageComponents.minutes);
+	animateOutput("seconds-output", ageComponents.seconds);
+
+	// Start live updating seconds and minutes
+	startLiveUpdate(ageComponents.seconds, ageComponents.minutes);
+}
+
+/**
+ * Main function to calculate and display age
+ */
 function calculateAge() {
+	if (!isValid()) {
+		return;
+	}
+
 	// Get user input values
-	let day = document.getElementById("day").value;
-	let month = document.getElementById("month").value;
-	let year = document.getElementById("year").value;
+	const day = parseInt(domElements.dayInput.value);
+	const month = parseInt(domElements.monthInput.value);
+	const year = parseInt(domElements.yearInput.value);
 
-	// isValid() returns boolean, to not to calculate
-	// unless the inputs are invalid
-	if (isValid()) {
-		// Create Date object from user input values
-		let birthDate = new Date(year, month - 1, day);
+	// Create Date object from user input values
+	const birthDate = new Date(year, month - 1, day);
 
-		// Calculate age in milliseconds
-		let ageInMs = Date.now() - birthDate.getTime();
+	// Calculate age components
+	const ageComponents = calculateAgeComponents(birthDate);
 
-		// Calculate age in years, months, and days
-		let ageInYears = Math.floor(ageInMs / MS_PER_YEAR);
-		// MS_PER_YEAR = 1000ms * 60s * 60min * 24hrs * 365.25 days
-		let ageInMonths = Math.floor((ageInMs % MS_PER_YEAR) / 2629746000);
-		/**
-		 *	ms per month
-		 *	 % is used because we want the remaining time
-		 *	 2629746000 = 1000ms * 60s * 60min * 24hrs * 30.44 days
-		 */
-		let ageInDays = Math.floor((ageInMs % 2629746000) / 86400000);
-		// ms per day
-		// 86400000 = 1000ms * 60s * 60min * 24hrs
+	// Display results
+	displayAgeResults(ageComponents);
+}
 
-		let ageInHours = Math.floor((ageInMs % 86400000) / 3600000);
-		// 3600000 = 1000ms * 60s * 60min
-		let ageInMinutes = Math.floor((ageInMs % 3600000) / 60000);
-		// 60000 = 1000ms * 60s
-		let ageInSeconds = Math.floor((ageInMs % 60000) / 1000);
-		// 1000ms
-
-		// Animate output fields with age values
-		animateOutput("years-output", ageInYears);
-		animateOutput("months-output", ageInMonths);
-		animateOutput("days-output", ageInDays);
-		animateOutput("hours-output", ageInHours);
-		animateOutput("minutes-output", ageInMinutes);
-		animateOutput("seconds-output", ageInSeconds);
-
-		moveSecondAndMinutes(ageInSeconds, ageInMinutes);
+/**
+ * Stop live updating of seconds and minutes
+ */
+function stopLiveUpdate() {
+	if (liveUpdateInterval) {
+		clearInterval(liveUpdateInterval);
+		liveUpdateInterval = null;
 	}
 }
 
-function moveSecondAndMinutes(ageInSeconds, ageInMinutes) {
-	let secondsOutput = document.getElementById("seconds-output");
-	let minutesOutput = document.getElementById("minutes-output");
+/**
+ * Start live updating seconds and minutes
+ * @param {number} initialSeconds - Initial seconds value
+ * @param {number} initialMinutes - Initial minutes value
+ */
+function startLiveUpdate(initialSeconds, initialMinutes) {
+	let currentSeconds = initialSeconds;
+	let currentMinutes = initialMinutes;
 
-	setInterval(function () {
-		if (ageInSeconds === 60) {
-			ageInSeconds = 00;
-			ageInMinutes++;
-			minutesOutput.innerHTML = ageInMinutes;
+	const secondsOutput = document.getElementById("seconds-output");
+	const minutesOutput = document.getElementById("minutes-output");
+
+	liveUpdateInterval = setInterval(() => {
+		currentSeconds++;
+		if (currentSeconds >= 60) {
+			currentSeconds = 0;
+			currentMinutes++;
+			minutesOutput.innerHTML = currentMinutes;
 		}
-		secondsOutput.innerHTML = ageInSeconds;
-		ageInSeconds++;
+		secondsOutput.innerHTML = currentSeconds;
 	}, 1000);
 }
 
 /**
- *
- * @param {*} outputId Id of HTML tag to view output in
- * @param {*} value value to be viewed in the HTML tag
+ * Animate output value from 0 to target value
+ * @param {string} outputId - ID of HTML element to animate
+ * @param {number} targetValue - Target value to animate to
  */
-function animateOutput(outputId, value) {
-	// Set output value to 0 initially to start with
-	document.getElementById(outputId).innerHTML = 0;
+function animateOutput(outputId, targetValue) {
+	const outputElement = document.getElementById(outputId);
+	
+	// Set output value to 0 initially
+	outputElement.innerHTML = 0;
+
+	// Skip animation if target value is 0
+	if (targetValue === 0) {
+		return;
+	}
 
 	// Calculate step size for animation
-	let step = Math.ceil(value / 100);
+	const step = Math.ceil(targetValue / 100);
+	const animationDuration = 20; // milliseconds
 
-	// Use setInterval to update output value every 10 milliseconds
-	// until it reaches the calculated value
-	let current = 0;
-	let interval = setInterval(() => {
-		current += step;
-		if (current >= value) {
+	// Animate to target value
+	let currentValue = 0;
+	const interval = setInterval(() => {
+		currentValue += step;
+		if (currentValue >= targetValue) {
 			clearInterval(interval);
-			current = value;
+			currentValue = targetValue;
 		}
-		document.getElementById(outputId).innerHTML = current;
-	}, 20);
+		outputElement.innerHTML = currentValue;
+	}, animationDuration);
 }
 
+/**
+ * Toggle dark mode for the application
+ */
 function toggleDarkMode() {
-	let state = {
-		body: document.getElementsByTagName("body")[0],
-		form: document.getElementsByTagName("form")[0],
-		input0: document.getElementsByTagName("input")[0],
-		input1: document.getElementsByTagName("input")[1],
-		input2: document.getElementsByTagName("input")[2],
-	};
+	const elementsToToggle = [
+		document.getElementsByTagName("body")[0],
+		document.getElementsByTagName("form")[0],
+		...document.getElementsByTagName("input")
+	];
 
-	for (let key in state) {
-		state[key].classList.toggle("dark-mode");
-	}
+	elementsToToggle.forEach(element => {
+		if (element) {
+			element.classList.toggle("dark-mode");
+		}
+	});
 }
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', () => {
+	initializeEventListeners();
+});
